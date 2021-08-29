@@ -70,6 +70,8 @@
 
 <script>
 import { validMobile } from "@/utils/validate";
+// 引入
+import { mapActions } from "vuex";
 export default {
   name: "Login",
   data() {
@@ -78,8 +80,8 @@ export default {
     };
     return {
       loginForm: {
-        mobile: "admin",
-        password: "111111",
+        mobile: "13800000002",
+        password: "123456",
       },
       loginRules: {
         mobile: [
@@ -110,6 +112,8 @@ export default {
     },
   },
   methods: {
+    // 映射子模块uer里的login action
+    ...mapActions(["user/login"]),
     showPwd() {
       if (this.passwordType === "password") {
         this.passwordType = "";
@@ -121,21 +125,23 @@ export default {
       });
     },
     handleLogin() {
-      this.$refs.loginForm.validate((valid) => {
-        if (valid) {
+      // 登陆逻辑
+      // 校验表单数据
+      // 隐藏bug，这里要用箭头函数，否则this指向的表单对象
+      this.$refs.loginForm.validate(async (isPass) => {
+        if (isPass) {
+          //  校验通过
+          // 发起登陆请求
           this.loading = true;
-          this.$store
-            .dispatch("user/login", this.loginForm)
-            .then(() => {
-              this.$router.push({ path: this.redirect || "/" });
-              this.loading = false;
-            })
-            .catch(() => {
-              this.loading = false;
-            });
-        } else {
-          console.log("error submit!!");
-          return false;
+          try {
+            await this["user/login"](this.loginForm);
+            // 成功，跳转路由
+            this.$router.push("/");
+          } catch (error) {
+            console.log(error);
+          } finally {
+            this.loading = false;
+          }
         }
       });
     },
