@@ -15,6 +15,19 @@ import router from './router'
 import '@/icons' // icon
 import '@/permission' // permission control
 
+// 注册某一个全局指令
+// import { imgerror } from "@/directive"
+// Vue.directive("imgerror", imgerror);
+
+
+// 一次性注册所有的全局指令:import * as
+// 遍历对象:for in
+// es6遍历对象: Object.keys
+import * as directives from '@/directive';
+Object.keys(directives).forEach(key => {
+    Vue.directive(key, directives[key]);
+});
+
 /**
  * If you don't want to use mock-server
  * you want to use MockJs for mock api

@@ -44,7 +44,6 @@ const actions = {
         const baseInfo = await getUserDetailById(data.userId);
         // 合并两个对象数据
         const userData = {...data, ...baseInfo };
-        console.log(userData);
         context.commit('setUserInfo', userData);
         return userData // 这里为什么要返回 为后面埋下伏笔
     }

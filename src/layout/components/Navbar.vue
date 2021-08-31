@@ -22,14 +22,7 @@
       <el-dropdown class="avatar-container" trigger="click">
         <div class="avatar-wrapper">
           <!-- 解决vue img src动态绑定，本地图片加载不出来的问题 -->
-          <img
-            :src="
-              userPhoto
-                ? userPhoto
-                : require('@/assets/common/bigUserHeader.png')
-            "
-            class="user-avatar"
-          />
+          <img :src="userPhoto" v-imgerror="defaultImg" class="user-avatar" />
           <span class="name">{{ userName }}</span>
           <i class="el-icon-caret-bottom" style="color: #fff" />
         </div>
@@ -55,6 +48,11 @@ import { mapGetters } from "vuex";
 import Hamburger from "@/components/Hamburger";
 
 export default {
+  data() {
+    return {
+      defaultImg: require("@/assets/common/bigUserHeader.png"),
+    };
+  },
   components: {
     // Breadcrumb,
     Hamburger,
