@@ -19,13 +19,13 @@ service.interceptors.response.use(
         if (response.data.success) {
             return response.data;
         } else {
-            message(response.data.message);
+            Message(response.data.message);
             return Promise.reject(new Error(response.data.message));
         }
     },
     // 2xx以外进这里
     error => {
-        message(error.message);
+        Message(error.message);
         return Promise.reject(error);
 
     }

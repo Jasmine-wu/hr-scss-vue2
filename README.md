@@ -14,6 +14,16 @@
             - 解决： 使用process.env.变量时，nodejs会自动加载对应环境文件的变量
     - 3.解决跨域问题：
         - 总的思路：设置前端服务器为代理服务器，网站像前端服务器发起请求，由前端服务器转发给真实的后台接口服务器
+        - 跨域实现思路：
+            - 网页如何开发服务器发起请求？
+                 - 网站向网站服务器(我们运行在本地的是vue内部开启的devServe)发起请求（axios baseURL不要设置域名），不设置域名，axiso发起ajax请求就是向localhost发起的。假如我们设置baseURL:/api，则axiso发起的ajax请求为:localhost:port/api
+            - 网站向服务器发起请求以后，开发服务器如何实现代理的？
+                - 通过在vue.config.js文件里配置开发服务器的代理。
+                - 设置一个触发条件,比如‘/api’,即遇到/api
+                - 设置target，则触发代理以后代理到哪里去，假如是：http://www.baidu.com/
+                - 开发服务器要开启跨域
+                - 是否要重写路由
+                - 以上：假如我们使用axios发起请求，axios请求的url是sync/login,配置的baseURL:'/api',则发起ajax请求完整路由：http://localhost:port/api/sync/login, 此时因为请求里包含/api， 则会触发代理，代理后的路由为：http://www.baidu.com/api/sync/login
         （1）解决开发环境跨域问题：vue-cli配置跨域代理
             ```javascript
                         '/api2': {
@@ -26,14 +36,13 @@
                                 '^/api': '' 
                             }
                         },
-
                    
             ```
         （2）解决生产环境跨域问题：
             - 生产环境，需将前端项目部署在具有反向代理功能的服务器上，比如nginx,然后在nginx上配置
     - 4.区分axios在不同环境下的请求baseURL
-        - 基础模板在环境文件中定义了变量VUE_APP_BASE_API，该变量可以作为axios请求的baseURL。
-        - 使用：
+        - 首先在环境文件中设置固定变量VUE_APP_BASE_API，该变量可以作为axios请求的baseURL。
+        - 再使用：
             ```js
             const service = axios.create({
                 // baseURL=/api会触发代理
@@ -44,6 +53,8 @@
 
             ```
     -  5.vuex+本地缓存管理token
+        - mapGetters需映射到组件的计算属性中
+        - 映射mapActions(['user/login'])， 不能有/， 调用this['user/login']()
     -  6.处理响应拦截器
         - （1）对请求失败统一添加reject处理
             - 前提是：人资项目的接口,如果执行失败,只是服务器只是设置了success=false，并没有reject抛出错误。
@@ -70,4 +81,6 @@
                 );
                 ```
 
-
+    - 7 权限控制
+        - 有token,是不是在登陆页,是，直接跳转到主页，
+        - 没token，是不是在白名单（404/login），不在，跳到登陆页
