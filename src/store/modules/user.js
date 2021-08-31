@@ -1,5 +1,5 @@
 import { getToken, setToken, removeToken } from "@/utils/auth";
-import { login, getUserInfo, getUserDetailById } from "@/api/user";
+import { login, getUserInfo, getUserDetailById, logout } from "@/api/user";
 const state = {
     token: getToken(), //token初始状态
     userInfo: {}, //这里为什么是用{}而不是null, null.属性会抱异常
@@ -46,6 +46,13 @@ const actions = {
         const userData = {...data, ...baseInfo };
         context.commit('setUserInfo', userData);
         return userData // 这里为什么要返回 为后面埋下伏笔
+    },
+
+    logout(context) {
+        // 删除token
+        context.commit('removeToken');
+        // 删除用户数据
+        context.commit('removeUserInfo');
     }
 
 };
