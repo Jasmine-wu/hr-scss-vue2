@@ -1,5 +1,5 @@
 import { getToken, setToken, removeToken } from "@/utils/auth";
-import { login, getUserInfo } from "@/api/user";
+import { login, getUserInfo, getUserDetailById } from "@/api/user";
 const state = {
     token: getToken(), //token初始状态
     userInfo: {}, //这里为什么是用{}而不是null, null.属性会抱异常
@@ -38,10 +38,15 @@ const actions = {
 
     // 获取用户资料
     async getUserInfo(context) {
+        // 获取用户资料
         const data = await getUserInfo();
-        console.log(data);
-        context.commit('setUserInfo', data);
-        return data // 这里为什么要返回 为后面埋下伏笔
+        // 获取用户基本信息
+        const baseInfo = await getUserDetailById(data.userId);
+        // 合并两个对象数据
+        const userData = {...data, ...baseInfo };
+        console.log(userData);
+        context.commit('setUserInfo', userData);
+        return userData // 这里为什么要返回 为后面埋下伏笔
     }
 
 };
