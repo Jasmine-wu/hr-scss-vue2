@@ -21,8 +21,16 @@
     <div class="right-menu">
       <el-dropdown class="avatar-container" trigger="click">
         <div class="avatar-wrapper">
-          <img src="@/assets/common/bigUserHeader.png" class="user-avatar" />
-          <span class="name">管理员</span>
+          <!-- 解决vue img src动态绑定，本地图片加载不出来的问题 -->
+          <img
+            :src="
+              userPhoto
+                ? userPhoto
+                : require('@/assets/common/bigUserHeader.png')
+            "
+            class="user-avatar"
+          />
+          <span class="name">{{ userName }}</span>
           <i class="el-icon-caret-bottom" style="color: #fff" />
         </div>
         <el-dropdown-menu slot="dropdown" class="user-dropdown">
@@ -52,7 +60,7 @@ export default {
     Hamburger,
   },
   computed: {
-    ...mapGetters(["sidebar", "avatar"]),
+    ...mapGetters(["sidebar", "avatar", "userName", "userPhoto"]),
   },
   methods: {
     toggleSideBar() {

@@ -11,7 +11,7 @@ import 'nprogress/nprogress.css' // 引入进度条样式
 const whiteList = ['/login', '/404'];
 
 // 路由前置守卫
-router.beforeEach((to, from, next) => {
+router.beforeEach(async(to, from, next) => {
     NProgress.start() // 开启进度条
         // 如果有token
     if (store.getters.token) {
@@ -22,6 +22,10 @@ router.beforeEach((to, from, next) => {
 
         } else {
             // 不是，放行
+            // 获取用户信息
+            if (!store.getters.userId) {
+                await store.dispatch('user/getUserInfo'); //强制等待，获取完了再跳转next
+            }
             next();
         }
 

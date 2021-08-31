@@ -27,11 +27,13 @@ service.interceptors.response.use(
     // 2xx以内会进这里
     response => {
         // axios多包了一层data
-        if (response.data.success) {
-            return response.data;
+        // 统一解构数据
+        const { message, data, success } = response.data;
+        if (success) {
+            return data;
         } else {
-            Message(response.data.message);
-            return Promise.reject(new Error(response.data.message));
+            Message(message);
+            return Promise.reject(new Error(message));
         }
     },
     // 2xx以外进这里

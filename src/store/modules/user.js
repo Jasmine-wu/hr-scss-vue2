@@ -1,7 +1,8 @@
 import { getToken, setToken, removeToken } from "@/utils/auth";
-import { login } from "@/api/user";
+import { login, getUserInfo } from "@/api/user";
 const state = {
     token: getToken(), //token初始状态
+    userInfo: {}, //这里为什么是用{}而不是null, null.属性会抱异常
 };
 const mutations = {
     setToken(state, token) {
@@ -15,20 +16,34 @@ const mutations = {
         state.token = null;
         // 删除本地数据
         removeToken();
+    },
+    setUserInfo(state, data) {
+        state.userInfo = data;
+
+    },
+    removeUserInfo(state) {
+        state.userInfo = {};
     }
 };
 const actions = {
+    // 登陆
     async login(context, body) {
         // 注意axios默认加了一层data
         // 发起异步请求
-        const result = await login(body);
-        console.log(result);
+        const data = await login(body);
 
-        if (result.success) {
-            // 修改vuex token状态
-            context.commit('setToken', result.data);
-        }
+        // 修改vuex token状态
+        context.commit('setToken', data);
     },
+
+    // 获取用户资料
+    async getUserInfo(context) {
+        const data = await getUserInfo();
+        console.log(data);
+        context.commit('setUserInfo', data);
+        return data // 这里为什么要返回 为后面埋下伏笔
+    }
+
 };
 
 export default {

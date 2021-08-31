@@ -136,6 +136,7 @@ export default {
           try {
             await this["user/login"](this.loginForm);
             // 成功，跳转路由
+            console.log("登陆获取成功");
             this.$router.push("/");
           } catch (error) {
             console.log(error);
