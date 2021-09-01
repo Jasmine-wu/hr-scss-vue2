@@ -1,5 +1,6 @@
-import { getToken, setToken, removeToken } from "@/utils/auth";
-import { login, getUserInfo, getUserDetailById, logout } from "@/api/user";
+import { getToken, setToken, removeToken, setTimeStamp } from "@/utils/auth";
+import { login, getUserInfo, getUserDetailById } from "@/api/user";
+
 const state = {
     token: getToken(), //token初始状态
     userInfo: {}, //这里为什么是用{}而不是null, null.属性会抱异常
@@ -34,6 +35,10 @@ const actions = {
 
         // 修改vuex token状态
         context.commit('setToken', data);
+
+        // 存入token时间戳
+        setTimeStamp(Date.now());
+
     },
 
     // 获取用户资料

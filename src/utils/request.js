@@ -2,6 +2,9 @@
 import axios from 'axios';
 import { Message } from 'element-ui';
 import store from "@/store";
+import { getTimeStamp } from './auth';
+import router from '@/router';
+const timeOut = 60 * 60; //token有效期2小时
 const service = axios.create({
     // baseURL=/api会触发代理
     // localhost:port/api 代理到 http://ihrm-java.itheima.net/api
@@ -10,8 +13,22 @@ const service = axios.create({
 });
 
 service.interceptors.request.use(config => {
+
     // 在这个位置需要统一的去注入token
     if (store.getters.token) {
+
+        // 先判断token是否过期
+        if (isTimeOut()) {
+            console.log("xxx");
+            // 如果超时了
+            // 清除token数据
+            store.dispatch('user/logout');
+            // 跳转到登陆页面
+            router.push('/login');
+            // return reject 中断程序
+            return Promise.reject(new Error('身份令牌过期了，请重新登陆'));
+        }
+
         // 如果token存在 注入token
         config.headers['Authorization'] = `Bearer ${store.getters.token}`
     }
@@ -43,4 +60,9 @@ service.interceptors.response.use(
 
     }
 );
+
+function isTimeOut() {
+    var currentTime = Date.now();
+    return (currentTime - getTimeStamp()) / 1000 > timeOut;
+};
 export default service;
