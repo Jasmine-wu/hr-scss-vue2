@@ -108,6 +108,8 @@
         - （1）主动介入：客户端做判断
             - 在获取时存入时间戳
             - 在token注入的地方判断当前时间与token获取时间>=过期时间->有->logout清除token->跳转登陆页->reuturn Promise.reject(new Error(“身份令牌过期了，请重新登陆”))
-        - （2）被动介入：服务器做超时判断
+        - （2）被动介入：服务器判断token是否超时，返回一个error
+            - 响应拦截器里，判断error.response里的token过期的字段是不是过期值
+        
 
 

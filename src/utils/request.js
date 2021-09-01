@@ -16,18 +16,17 @@ service.interceptors.request.use(config => {
 
     // 在这个位置需要统一的去注入token
     if (store.getters.token) {
-
+        // 主动处理token过期问题
         // 先判断token是否过期
-        if (isTimeOut()) {
-            console.log("xxx");
-            // 如果超时了
-            // 清除token数据
-            store.dispatch('user/logout');
-            // 跳转到登陆页面
-            router.push('/login');
-            // return reject 中断程序
-            return Promise.reject(new Error('身份令牌过期了，请重新登陆'));
-        }
+        // if (isTimeOut()) {
+        //     // 如果超时了
+        //     // 清除token数据
+        //     store.dispatch('user/logout');
+        //     // 跳转到登陆页面
+        //     router.push('/login');
+        //     // return reject 中断程序
+        //     return Promise.reject(new Error('身份令牌过期了，请重新登陆'));
+        // }
 
         // 如果token存在 注入token
         config.headers['Authorization'] = `Bearer ${store.getters.token}`
@@ -55,7 +54,17 @@ service.interceptors.response.use(
     },
     // 2xx以外进这里
     error => {
-        Message(error.message);
+
+        // 被动处理token过期问题
+        if (error && error.response && error.response.data.code === 10002) {
+            // 清除token数据
+            store.dispatch('user/logout');
+            // 跳转到登陆页面
+            router.push('/login');
+
+        } else {
+            Message(error.message);
+        }
         return Promise.reject(error);
 
     }
