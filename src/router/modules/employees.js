@@ -10,6 +10,7 @@ export default {
             import ('@/views/employees'),
         meta: {
             title: '员工', //左边菜单导航栏的信息来自路由的元信息
+            icon: 'people',
         }
     }],
 

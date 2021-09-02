@@ -10,6 +10,7 @@ export default {
             import ('@/views/attendances'),
         meta: {
             title: '考勤', //左边菜单导航栏的信息来自路由的元信息
+            icon: 'skill',
         }
     }],
 }

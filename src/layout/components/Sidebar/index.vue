@@ -33,6 +33,7 @@ export default {
   components: { SidebarItem, Logo },
   computed: {
     ...mapGetters(["sidebar"]),
+    // 计算属性routes，来源于所有的路由
     routes() {
       return this.$router.options.routes;
     },

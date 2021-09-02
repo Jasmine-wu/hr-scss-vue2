@@ -9,7 +9,8 @@ export default {
         component: () =>
             import ('@/views/approvals'),
         meta: {
-            title: '审批', //左边菜单导航栏的信息来自路由的元信息
+            title: '审批', //左边菜单导航栏item的标题来自路由的元信息里的title
+            icon: 'tree-table', //左边菜单导航栏item的icon来自路由的元信息里的icon，icon图标加载的是src/icons/svg里的vvg图片
         }
     }],
 

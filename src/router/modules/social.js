@@ -10,6 +10,7 @@ export default {
             import ('@/views/social'),
         meta: {
             title: '社保', //左边菜单导航栏的信息来自路由的元信息
+            icon: 'table'
         }
     }],
 }

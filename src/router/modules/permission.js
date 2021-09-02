@@ -10,6 +10,8 @@ export default {
             import ('@/views/permission'),
         meta: {
             title: '权限管理', //左边菜单导航栏的信息来自路由的元信息
+            icon: 'lock',
+
         }
     }],
 }
