@@ -17,6 +17,7 @@
             :node-data="data"
             @del-dept="getDepartments"
             @add-dept="onClickAddDepartment"
+            @edit-dept="onClickEditDepartment"
           ></tree-node>
         </el-tree>
       </el-card>
@@ -24,9 +25,10 @@
 
     <!-- 添加部门对话框 -->
     <dialog-department-add
+      ref="deptDialog"
       v-if="isShowAddDepartmentDialog"
       :isShow.sync="isShowAddDepartmentDialog"
-      :dept-id="deptId"
+      :cur-dpt="curDpt"
       @update-depts="getDepartments"
     ></dialog-department-add>
   </div>
@@ -55,7 +57,7 @@ export default {
         label: "name",
       },
       isShowAddDepartmentDialog: false, //是否显示添加部门对话框
-      deptId: "", //部门ID
+      curDpt: {}, //当前部门数据
     };
   },
   methods: {
@@ -73,9 +75,17 @@ export default {
       this.departs = transResults;
     },
     // 点击添加部门
-    onClickAddDepartment(deptId) {
-      this.deptId = deptId;
+    onClickAddDepartment(node) {
+      this.curDpt = node;
       this.isShowAddDepartmentDialog = true;
+    },
+    // 点击编辑部门
+    onClickEditDepartment(node) {
+      this.curDpt = node;
+      this.isShowAddDepartmentDialog = true;
+      this.$nextTick(() => {
+        this.$refs.deptDialog.getDepartDetail(node.id);
+      });
     },
   },
 };

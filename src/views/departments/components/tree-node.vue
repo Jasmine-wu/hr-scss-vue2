@@ -52,10 +52,10 @@ export default {
     operatoeDepts(command) {
       if (command === "add") {
         // 添加部门
-        this.$emit("add-dept", this.nodeData.id);
+        this.$emit("add-dept", this.nodeData);
       } else if (command === "edit") {
         // 编辑部门
-        this.$emit("edit-dept");
+        this.$emit("edit-dept", this.nodeData);
       } else {
         // 删除部门
         this.$confirm("确认要删除该部门？")

@@ -1,5 +1,5 @@
 <template>
-  <el-dialog title="添加部门" :visible="isShow" @close="onCancel">
+  <el-dialog :title="title" :visible="isShow" @close="onCancel">
     <el-form
       ref="deptsForm"
       :model="form"
@@ -49,7 +49,12 @@
   </el-dialog>
 </template>
 <script>
-import { getDepartments, addDepartments } from "@/api/departments";
+import {
+  getDepartments,
+  addDepartments,
+  getDepartDetail,
+  updateDepartments,
+} from "@/api/departments";
 import { getEmployeeSimple } from "@/api/employees";
 
 export default {
@@ -59,40 +64,67 @@ export default {
       type: false,
       default: false,
     },
-    deptId: {
-      type: [String, Number, Object],
+    curDpt: {
+      type: [Object],
       required: true,
     },
   },
 
   data() {
     // 检查部门name是否重复：
-    // 同级部门下是否有重复的部门名称
     const checkNameRepeat = async (rule, value, callback) => {
-      // 去除左右空格
       value = value.trim();
       // 获取所有部门数据
       const { depts } = await getDepartments();
-      // 找到该部门下所有子部门
-      const subdepts = depts.filter((item) => item.pid === this.deptId);
-      // 检查该部门名称在子部门中是否重复
-      // find/some的区别 find返回符合条件的item, some满足条件则返回true
-      const isExist = subdepts.some((item) => item.name === value);
 
-      isExist ? callback(new Error(`同级部门下已存在${value}`)) : callback();
+      // 区分是编辑部门还是添加部门
+      let isExist = false;
+
+      if (this.form.id) {
+        // 编辑
+        // 检查该部门在其父部门下所有同级部门中不能重复除了自身）
+        // 先找到该部门同一父部门下的所有兄弟部门
+        const siblingsDepts = depts.filter(
+          (item) => item.pid === this.curDpt.pid
+        );
+        // 兄弟部门中除了自己，是否有重复的
+        isExist = siblingsDepts.some(
+          (item) => item.name === value && item.id !== this.curDpt.id
+        );
+      } else {
+        // 添加:
+        // 检查该部门名称在所在子部门中是否有重复
+        // 找到该部门下所有子部门
+        const subdepts = depts.filter((item) => item.pid === this.curDpt.id);
+        // find/some的区别 find返回符合条件的item, some满足条件则返回true
+        isExist = subdepts.some((item) => item.name === value);
+      }
+
+      return isExist
+        ? callback(new Error(`同级部门下已存在${value}`))
+        : callback();
     };
 
     // 检查部门编码是否重复：
-    // 部门编码在整个模块中都不允许重复
     const checkCodeRepeat = async (rule, value, callback) => {
-      // 去除左右空格
       value = value.trim();
       // 获取所有部门数据
       const { depts } = await getDepartments();
+      let isExist = false;
+      // 区分是编辑还是添加
+      if (this.form.id) {
+        // 编辑
+        // 检查部门编码在所有模块中除了自己都不能有重复
+        isExist = depts.some(
+          (item) => item.code === value && item.id !== this.curDpt.id
+        );
+      } else {
+        // 新增:
+        // 检查部门编码在整个模块中都不允许重复
+        isExist = depts.some((item) => item.code === value);
+      }
 
-      depts.some((item) => item.code === value)
-        ? callback(new Error("编号已存在"))
-        : callback();
+      return isExist ? callback(new Error("编号已存在")) : callback();
     };
     return {
       form: {
@@ -125,20 +157,32 @@ export default {
       peoples: [],
     };
   },
+  computed: {
+    // 计算属性title控制标题显示
+    title: function () {
+      return this.form.id ? "编辑部门" : "添加部门";
+    },
+  },
   methods: {
     // 点击确认
     onConfirm() {
       this.$refs.deptsForm.validate(async (isPass) => {
         // 如果所有表单数据都验证通过
         if (isPass) {
-          await addDepartments({
-            ...this.form,
-            pid: this.deptId,
-          });
-          this.$message("添加成功");
+          // 区分是添加部门还是编辑部门
+          if (this.form.id) {
+            // 编辑部门
+            await updateDepartments(this.form);
+          } else {
+            // 添加部门
+            await addDepartments({
+              ...this.form,
+              pid: this.curDpt.id,
+            });
+          }
           this.$emit("update-depts");
           this.$emit("update:isShow", false);
-          this.form = {};
+          this.clearFormData();
         }
       });
     },
@@ -148,13 +192,20 @@ export default {
       this.$emit("update:isShow", false);
       // 重置表单数据
       // this.$refs.deptsForm.resetFields();
-      this.form = {};
+      this.clearFormData();
     },
     // 获取部门负责人数据
     async getManagers() {
       // 下拉框里的部门负责人从所有人里选
       const employees = await getEmployeeSimple();
       this.peoples = employees;
+    },
+    // 获取部门详情
+    async getDepartDetail(id) {
+      this.form = await getDepartDetail(id);
+    },
+    clearFormData() {
+      this.form = {};
     },
   },
 };

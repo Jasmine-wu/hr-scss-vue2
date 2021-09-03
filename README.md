@@ -146,9 +146,13 @@
             //该子组件修改的props属性用sync修饰
             <child  :showDialog.sync="isShowDialog" />
 
-
-
         ```
+
+    - 17 父组件调用子组件中的方法
+        - this.$refs.refname.functionName
+
+    - 18 计算属性设置dialog的标题
+    - 19 区分编辑/添加状态，分别设置不同的校验规则和显示不同的弹窗数据
 
 
 
