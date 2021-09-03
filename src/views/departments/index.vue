@@ -6,7 +6,7 @@
         <tree-node
           :node-data="titles"
           :is-root="true"
-          @add-dept="addDepartment"
+          @add-dept="onClickAddDepartment"
         ></tree-node>
 
         <!-- 组织架构：树形控件 -->
@@ -16,7 +16,7 @@
             slot-scope="{ data }"
             :node-data="data"
             @del-dept="getDepartments"
-            @add-dept="addDepartment"
+            @add-dept="onClickAddDepartment"
           ></tree-node>
         </el-tree>
       </el-card>
@@ -27,7 +27,7 @@
       v-if="isShowAddDepartmentDialog"
       :isShow="isShowAddDepartmentDialog"
       :dept-id="deptId"
-      @confirm="isShowAddDepartmentDialog = false"
+      @update-depts="getDepartments"
       @cancel="isShowAddDepartmentDialog = false"
     ></dialog-department-add>
   </div>
@@ -69,21 +69,16 @@ export default {
         manager: result.companyManager,
         id: "",
       };
-
       // 将后台原始数组数组转成树形数据
       const transResults = transListToTree(result.depts, "");
       this.departs = transResults;
     },
-    // 添加部门
-    addDepartment(deptId) {
-      console.log("xxx");
-
-      console.log(deptId);
+    // 点击添加部门
+    onClickAddDepartment(deptId) {
       this.deptId = deptId;
       this.isShowAddDepartmentDialog = true;
     },
   },
-  // 点击编辑确认
 };
 </script>
 

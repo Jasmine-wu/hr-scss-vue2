@@ -51,9 +51,6 @@ export default {
     //部门操作
     operatoeDepts(command) {
       if (command === "add") {
-        console.log("addddxx");
-        console.log(this.nodeData.id);
-
         // 添加部门
         this.$emit("add-dept", this.nodeData.id);
       } else if (command === "edit") {

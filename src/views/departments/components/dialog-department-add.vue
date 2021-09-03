@@ -1,6 +1,7 @@
 <template>
-  <el-dialog title="添加部门" :visible="isShow" @close="$emit('cancel')">
+  <el-dialog title="添加部门" :visible="isShow" @close="onCancel">
     <el-form
+      ref="deptsForm"
       :model="form"
       :rules="rules"
       label-width="120px"
@@ -48,7 +49,7 @@
   </el-dialog>
 </template>
 <script>
-import { getDepartments } from "@/api/departments";
+import { getDepartments, addDepartments } from "@/api/departments";
 import { getEmployeeSimple } from "@/api/employees";
 
 export default {
@@ -127,11 +128,26 @@ export default {
   methods: {
     // 点击确认
     onConfirm() {
-      this.$emit("confirm");
+      this.$refs.deptsForm.validate(async (isPass) => {
+        // 如果所有表单数据都验证通过
+        if (isPass) {
+          await addDepartments({
+            ...this.form,
+            pid: this.deptId,
+          });
+          this.$message("添加成功");
+          this.$emit("cancel");
+          this.$emit("update-depts");
+          this.form = {};
+        }
+      });
     },
     // 点击取消
     onCancel() {
       this.$emit("cancel");
+      // 重置表单数据
+      // this.$refs.deptsForm.resetFields();
+      this.form = {};
     },
     // 获取部门负责人数据
     async getManagers() {
