@@ -136,15 +136,16 @@ export default {
             pid: this.deptId,
           });
           this.$message("添加成功");
-          this.$emit("cancel");
           this.$emit("update-depts");
+          this.$emit("update:isShow", false);
           this.form = {};
         }
       });
     },
     // 点击取消
     onCancel() {
-      this.$emit("cancel");
+      // vue.js sync修饰符的使用
+      this.$emit("update:isShow", false);
       // 重置表单数据
       // this.$refs.deptsForm.resetFields();
       this.form = {};

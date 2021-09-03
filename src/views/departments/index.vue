@@ -25,10 +25,9 @@
     <!-- 添加部门对话框 -->
     <dialog-department-add
       v-if="isShowAddDepartmentDialog"
-      :isShow="isShowAddDepartmentDialog"
+      :isShow.sync="isShowAddDepartmentDialog"
       :dept-id="deptId"
       @update-depts="getDepartments"
-      @cancel="isShowAddDepartmentDialog = false"
     ></dialog-department-add>
   </div>
 </template>

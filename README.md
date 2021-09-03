@@ -132,9 +132,24 @@
             - 具体如何遍历？
                 - 找到根id
         - 扩展：如何将树形数据转化成数组数据？
+
         
+    - 16 vue.js的sync修饰符的使用
+        - 常规: 子组件修改自身props属性，需$emit通知父组件来修改
+        - sync提供了一种简写形式
         ```js
+            //子组件内
+            //固定写法：
+            this.$emit("update:要修改的组件props属性名", 属性值)
+            this.$emit('update:showDialog', false);
+            //父组件中：
+            //该子组件修改的props属性用sync修饰
+            <child  :showDialog.sync="isShowDialog" />
+
+
+
         ```
+
 
 
 
