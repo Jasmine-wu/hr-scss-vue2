@@ -13,9 +13,17 @@
         <el-input v-model="form.code" autocomplete="off"></el-input>
       </el-form-item>
       <el-form-item label="部门负责人" prop="manager">
-        <el-select v-model="form.manager" placeholder="请选择">
-          <el-option label="区域一" value="shanghai"></el-option>
-          <el-option label="区域二" value="beijing"></el-option>
+        <el-select
+          v-model="form.manager"
+          @focus="getManagers"
+          placeholder="请选择"
+        >
+          <el-option
+            v-for="(people, index) in peoples"
+            :key="index"
+            :label="people.username"
+            :value="people.username"
+          ></el-option>
         </el-select>
       </el-form-item>
 
@@ -41,6 +49,8 @@
 </template>
 <script>
 import { getDepartments } from "@/api/departments";
+import { getEmployeeSimple } from "@/api/employees";
+
 export default {
   name: "DialogDepartmentAdd",
   props: {
@@ -79,7 +89,6 @@ export default {
       // 获取所有部门数据
       const { depts } = await getDepartments();
 
-      console.log(depts);
       depts.some((item) => item.code === value)
         ? callback(new Error("编号已存在"))
         : callback();
@@ -112,6 +121,7 @@ export default {
           { min: 1, max: 300, message: "长度必须在1-300之内", trigger: "blur" },
         ],
       },
+      peoples: [],
     };
   },
   methods: {
@@ -122,6 +132,12 @@ export default {
     // 点击取消
     onCancel() {
       this.$emit("cancel");
+    },
+    // 获取部门负责人数据
+    async getManagers() {
+      // 下拉框里的部门负责人从所有人里选
+      const employees = await getEmployeeSimple();
+      this.peoples = employees;
     },
   },
 };
