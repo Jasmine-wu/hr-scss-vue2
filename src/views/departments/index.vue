@@ -1,5 +1,6 @@
 <template>
-  <div class="dashboard-container">
+  <!-- 局部loading -->
+  <div class="dashboard-container" v-loading="loading">
     <div class="app-container">
       <el-card class="tree-card">
         <!-- 组织架构：头部 -->
@@ -58,11 +59,13 @@ export default {
       },
       isShowAddDepartmentDialog: false, //是否显示添加部门对话框
       curDpt: {}, //当前部门数据
+      loading: false,
     };
   },
   methods: {
     // 获取部门
     async getDepartments() {
+      this.loading = true;
       const result = await getDepartments();
       // 给头部treeNode添加id：原数据是没有id属性的
       this.titles = {
@@ -73,6 +76,7 @@ export default {
       // 将后台原始数组数组转成树形数据
       const transResults = transListToTree(result.depts, "");
       this.departs = transResults;
+      this.loading = false;
     },
     // 点击添加部门
     onClickAddDepartment(node) {
