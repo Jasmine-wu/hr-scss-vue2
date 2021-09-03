@@ -1,6 +1,6 @@
 # 人力资源管理平台
     - 桌面web项目
-    - vue+vuex+vue-router+vue-element-template + elementUI + sass(scss)
+    - vue-element-template+ vuex + vue-router+ elementUI + sass(scss)
 
 ## 主要功能
     - 1.表单校验
@@ -55,6 +55,7 @@
     -  5.vuex+本地缓存管理token
         - mapGetters需映射到组件的计算属性中
         - 映射mapActions(['user/login'])， 不能有/， 调用this['user/login']()
+
     -  6.处理响应拦截器
         - （1）对请求失败统一添加reject处理
             - 前提是：人资项目的接口,如果执行失败,只是服务器只是设置了success=false，并没有reject抛出错误。
@@ -122,5 +123,19 @@
         - 组件内：fuctional=true,
         - 组件内：咩有vdata响应式数据，没有this，只接收props属性
         - 组件内：render函数
+
+    - 15 树形组件el-tree
+        - （1）自定义树形组件的内容，并单独封装成组件tree-node
+        - （2）将数组数据转化成树形数据
+            - 原始数组数据：数组里每条部门数据里pid表示父部门是哪个
+            - 用递归算法
+            - 具体如何遍历？
+                - 找到根id
+        - 扩展：如何将树形数据转化成数组数据？
+        
+        ```js
+        ```
+
+
 
 
