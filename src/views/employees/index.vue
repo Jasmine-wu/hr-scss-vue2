@@ -17,7 +17,10 @@
         <template slot="after">
           <el-button size="small" type="warning">导入</el-button>
           <el-button size="small" type="danger">导出</el-button>
-          <el-button size="small" type="primary">新增员工</el-button>
+
+          <el-button size="small" type="primary" @click="clickAddEmployeeBtn"
+            >新增员工</el-button
+          >
         </template>
       </page-tools>
 
@@ -37,13 +40,18 @@
           <el-table-column label="入职时间" sortable="" prop="timeOfEntry" />
           <el-table-column label="账户状态" sortable="" prop="enableState" />
           <el-table-column label="操作" sortable="" fixed="right" width="280">
-            <template>
+            <template slot-scope="{ row }">
               <el-button type="text" size="small">查看</el-button>
               <el-button type="text" size="small">转正</el-button>
               <el-button type="text" size="small">调岗</el-button>
               <el-button type="text" size="small">离职</el-button>
               <el-button type="text" size="small">角色</el-button>
-              <el-button type="text" size="small">删除</el-button>
+              <el-button
+                type="text"
+                size="small"
+                @click="clickDeleteEmployeesBtn(row.id)"
+                >删除</el-button
+              >
             </template>
           </el-table-column>
         </el-table>
@@ -64,13 +72,21 @@
         </el-row>
       </el-card>
     </div>
+
+    <!-- 放置弹层组件 -->
+    <dialog-employee-add :show-dialog.sync="isShowDialog">
+    </dialog-employee-add>
   </div>
 </template>
 
 <script>
-import { getEmployeeList } from "@/api/employees";
+import { getEmployeeList, delEmployee } from "@/api/employees";
 import employeesEnum from "@/api/constant/employees";
+import DialogEmployeeAdd from "@/views/employees/components/dialog-employee-add.vue";
 export default {
+  components: {
+    DialogEmployeeAdd,
+  },
   data() {
     return {
       loading: false,
@@ -80,6 +96,7 @@ export default {
         size: 10,
         total: 0, // 总数
       },
+      isShowDialog: false,
     };
   },
   created() {
@@ -101,6 +118,22 @@ export default {
     formatFormOfEmployment(row, column, cellValue) {
       const item = employeesEnum.hireType.find((item) => item.id === cellValue);
       return item ? item.value : "未知";
+    },
+    // 点击删除按钮
+    async clickDeleteEmployeesBtn() {
+      try {
+        await this.$confirm("您确定删除该员工吗");
+        await delEmployee(id);
+        this.getEmployeeList();
+        this.$message.success("删除员工成功");
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    // 点击新增员工按钮
+    clickAddEmployeeBtn() {
+      console.log("lcikck");
+      this.isShowDialog = true;
     },
   },
 };
