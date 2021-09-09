@@ -15,6 +15,10 @@ import router from './router'
 import '@/icons' // icon
 import '@/permission' // permission control
 
+// 统一注册全局组件
+import components from '@/components'
+Vue.use(components);
+
 // 注册某一个全局指令
 // import { imgerror } from "@/directive"
 // Vue.directive("imgerror", imgerror);
