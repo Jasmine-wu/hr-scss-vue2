@@ -174,6 +174,10 @@ export default {
         部门: "departmentName",
       };
 
+      // 复杂表头和合并项
+      const multiHeader = [["姓名", "主要信息", "", "", "", "", "部门"]];
+      const merges = ["A1:A2", "B1:F1", "G1:G2"];
+
       // 后台数据格式 [{username:'孙某人', mobile:'12224445676'},{},{}]
       // data接收的数据格式：[['孙某人','12224445676'],[],[]]
       // 问题：要先将后台json格式的数据转换成二维数组格式数据
@@ -191,6 +195,8 @@ export default {
           filename: "员工基本信息表格", //非必填
           autoWidth: true, //非必填
           bookType: "xlsx", //非必填
+          multiHeader,
+          merges,
         });
       });
     },
