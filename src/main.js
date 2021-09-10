@@ -24,7 +24,7 @@ Vue.use(components);
 // Vue.directive("imgerror", imgerror);
 
 
-// 一次性注册所有的全局指令:import * as
+// 统一注册全局指令:import * as
 // 遍历对象:for in
 // es6遍历对象: Object.keys
 import * as directives from '@/directive';
@@ -32,18 +32,11 @@ Object.keys(directives).forEach(key => {
     Vue.directive(key, directives[key]);
 });
 
-/**
- * If you don't want to use mock-server
- * you want to use MockJs for mock api
- * you can execute: mockXHR()
- *
- * Currently MockJs will be used in the production environment,
- * please remove it before going online ! ! !
- */
-// if (process.env.NODE_ENV === 'production') {
-//   const { mockXHR } = require('../mock')
-//   mockXHR()
-// }
+// 统一注册全局过滤器
+import * as filters from "@/filters"
+Object.keys(filters).forEach(key => {
+    Vue.filter(key, filters[key]);
+});
 
 // set ElementUI lang to EN
 Vue.use(ElementUI, { locale })

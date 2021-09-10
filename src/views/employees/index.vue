@@ -19,10 +19,10 @@
             size="small"
             type="warning"
             @click="$router.push('/import')"
-            >excel导入</el-button
+            >Excel导入</el-button
           >
           <el-button size="small" type="danger" @click="cliclExportToExcelBtn"
-            >excel导出</el-button
+            >Excel导出</el-button
           >
 
           <el-button size="small" type="primary" @click="clickAddEmployeeBtn"
@@ -37,17 +37,25 @@
           <el-table-column label="序号" sortable="" type="index" />
           <el-table-column label="姓名" sortable="" prop="username" />
           <el-table-column label="工号" sortable="" prop="workNumber" />
+          <!-- 处理聘用形式 -->
           <el-table-column
             label="聘用形式"
             sortable=""
             prop="formOfEmployment"
             :formatter="formatFormOfEmployment"
           />
+
           <el-table-column label="部门" sortable="" prop="departmentName" />
-          <el-table-column label="入职时间" sortable="" prop="timeOfEntry" />
-          <el-table-column label="账户状态" sortable="" prop="enableState">
+
+          <el-table-column label="入职时间" sortable="" prop="timeOfEntry">
+            <!-- 处理入职时间 -->
             <template slot-scope="{ row }">
-              <!-- 根据当前状态来确定 是否打开开关 -->
+              {{ row.timeOfEntry | formatDate }}
+            </template>
+          </el-table-column>
+          <el-table-column label="账户状态" sortable="" prop="enableState">
+            <!-- 根据当前状态来确定 是否打开开关 -->
+            <template slot-scope="{ row }">
               <el-switch :value="row.enableState === 1" />
             </template>
           </el-table-column>
