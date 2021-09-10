@@ -157,8 +157,19 @@
     - 21 封装全局组件
             - （1）具名插槽的使用
             - （2）统一注册全局组件
-            
+
     - 22 格式化el-table枚举类型列数据
+    - 23 封装一个上传excel文件的组件- 上传excel表格批量导入表格数据
+        - 需求分析：新增员工，可以单个增加，也可以导入excel表格批量增加
+        - 选择文件上传
+        - 拖拽文件上传
+        - 实现: 
+            - vue-element-admin已实现了该功能，我们拿来进行二次改造：https://github.com/PanJiaChen/vue-element-admin/blob/master/src/components/UploadExcel/index.vue
+            - 该实现是对xsxl插件的二次封装，需： yarn add xlsx
+            - 注意的是：xsxl插件在解析excel表格里的时间格式数据，比如1992/12/1时，会将其转换成数值型数据，比如44550.
+                - 如果你的后台需要接收的是日期类型的数据，则需要将数值数据格式化成日期格式字符串，再转换成日期类型数据。
+
+            
 
 
 
