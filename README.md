@@ -169,6 +169,16 @@
             - 注意的是：xsxl插件在解析excel表格里的时间格式数据，比如1992/12/1时，会将其转换成数值型数据，比如44550.
                 - 如果你的后台需要接收的是日期类型的数据，则需要将数值数据格式化成日期格式字符串，再转换成日期类型数据。
 
+    - 24 封装一个将员工数据批量导出成excel表格的功能
+        - 实现：
+            - vue-element-admin已实现Export2Excel.js二次封装js-xlsx实现了导出成excel的功能
+            - Export2Excel依赖js-xlsx，file-saver，script-loader
+                - yarn add xlsx file-saver script-loader （注意script-loader 提供按需加载功能，生产。开发环境都要用）
+            - 注意的是：Export2Excel接收的数据是二维数组格式数据
+                - 需将后台json格式数据[{{},{}}]转化成二维数据[[],[]]
+                - 单独对后台字符串日期数据进行处理:"2018-11-16T00:00:00.000+0000"转成2004/11/3
+    
+
             
 
 
