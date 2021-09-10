@@ -45,7 +45,12 @@
           />
           <el-table-column label="部门" sortable="" prop="departmentName" />
           <el-table-column label="入职时间" sortable="" prop="timeOfEntry" />
-          <el-table-column label="账户状态" sortable="" prop="enableState" />
+          <el-table-column label="账户状态" sortable="" prop="enableState">
+            <template slot-scope="{ row }">
+              <!-- 根据当前状态来确定 是否打开开关 -->
+              <el-switch :value="row.enableState === 1" />
+            </template>
+          </el-table-column>
           <el-table-column label="操作" sortable="" fixed="right" width="280">
             <template slot-scope="{ row }">
               <el-button type="text" size="small">查看</el-button>
@@ -88,7 +93,6 @@
 
 <script>
 import { getEmployeeList, delEmployee } from "@/api/employees";
-import employeesEnum from "@/api/constant/employees";
 import DialogEmployeeAdd from "@/views/employees/components/dialog-employee-add.vue";
 import { formatDate } from "@/filters";
 import EmployeeEnum from "@/api/constant/employees";
@@ -126,7 +130,8 @@ export default {
     },
     //格式化聘用形式列
     formatFormOfEmployment(row, column, cellValue) {
-      const item = employeesEnum.hireType.find((item) => item.id === cellValue);
+      const item = EmployeeEnum.hireType.find((item) => item.id === cellValue);
+      console.log(item.value);
       return item ? item.value : "未知";
     },
     // 点击删除按钮
