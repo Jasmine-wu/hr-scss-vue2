@@ -49,6 +49,7 @@
                   height: 100px;
                   padding: 10px;
                 "
+                @click="showQrCode(row.staffPhoto)"
               />
             </template>
           </el-table-column>
@@ -119,6 +120,14 @@
     <!-- 放置弹层组件 -->
     <dialog-employee-add :show-dialog.sync="isShowDialog">
     </dialog-employee-add>
+
+    <!-- 二维码弹层 -->
+    <el-dialog :visible.sync="isShowQrCodeDialog" title="查看二维码">
+      <el-row type="flex" justify="center">
+        <!-- 图像容器canvas -->
+        <canvas ref="myCanvas"></canvas>
+      </el-row>
+    </el-dialog>
   </div>
 </template>
 
@@ -127,6 +136,7 @@ import { getEmployeeList, delEmployee } from "@/api/employees";
 import DialogEmployeeAdd from "@/views/employees/components/dialog-employee-add.vue";
 import { formatDate } from "@/filters";
 import EmployeeEnum from "@/api/constant/employees";
+import QrCode from "qrcode";
 export default {
   components: {
     DialogEmployeeAdd,
@@ -140,7 +150,8 @@ export default {
         size: 10,
         total: 0, // 总数
       },
-      isShowDialog: false,
+      isShowDialog: false, //是否显示添加员工弹层
+      isShowQrCodeDialog: false, //是否显示查看二维码弹层
     };
   },
   created() {
@@ -162,7 +173,6 @@ export default {
     //格式化聘用形式列
     formatFormOfEmployment(row, column, cellValue) {
       const item = EmployeeEnum.hireType.find((item) => item.id === cellValue);
-      console.log(item.value);
       return item ? item.value : "未知";
     },
     // 点击删除按钮
@@ -244,6 +254,20 @@ export default {
           return row[headers[key]];
         });
       });
+    },
+
+    // 点击头像，查看二维码
+    showQrCode(url) {
+      console.log("click");
+      if (url) {
+        this.isShowQrCodeDialog = true;
+        this.$nextTick(() => {
+          // 根据图片地址生成二维码图像
+          QrCode.toCanvas(this.$refs.myCanvas, url);
+        });
+      } else {
+        this.$message.warning("该用户还未上传头像");
+      }
     },
   },
 };
