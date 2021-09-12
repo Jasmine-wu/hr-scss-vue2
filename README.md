@@ -1,7 +1,8 @@
 # 人力资源管理平台
     - 桌面web项目
     - vue-element-template+ vuex + vue-router+ elementUI + sass(scss)
-    - qrcode
+    - qrcode：生成二维码插件
+    - vue-print-nb：打印组件
 
 ## 主要功能
     - 1.表单校验
@@ -199,6 +200,32 @@
                 ```
     - 26 根据图片地址生成二维码
         - yarn add qrcode
+        - 准备canvas标签作为容器
+            ```js
+                this.$nextTick(() => {
+                    // 根据图片地址生成二维码图像
+                    QrCode.toCanvas(this.$refs.myCanvas, url);
+                });    
+                        ```
+    - 27 单独的打印页面
+        - 根据查询参数type区分不同类型，打印个人详情/岗位信息
+        - 打印功能：
+            - 右键浏览器点击打印完成打印
+                - 浏览器打印的问题：浏览器会把整个浏览器页面都打印出来，不合适
+            - 自己实现打印（推荐）
+        - 实现打印：
+            - 借助打印组件vue-print-nb
+                - yarn add vue-print-nb
+                -  全局注册组件,即可使用v-print指令
+                    ```js
+                    <el-row type="flex" justify="end">
+                        <el-button v-print="printObj" size="small" type="primary">打印</el-button>
+                     </el-row>
+                    printObj: {
+                        id: 'myPrint' //你想打印内容根标签的id
+                    }
+                    ```
+                    
 
             
 

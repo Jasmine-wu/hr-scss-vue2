@@ -28,6 +28,14 @@
             </el-form>
           </el-tab-pane>
           <el-tab-pane label="个人详情">
+            <!-- 打印个人基本信息： -->
+            <el-row type="flex" justify="end">
+              <el-tooltip content="打印个人基本信息">
+                <router-link :to="`/employees/print/${userId}?type=personal`">
+                  <i class="el-icon-printer" />
+                </router-link>
+              </el-tooltip>
+            </el-row>
             <!-- 个人详情组件: -->
             <!-- <user-info></user-info> -->
             <!-- 使用内置动态组件component: -->
@@ -35,6 +43,14 @@
             <component :is="userComponent"></component>
           </el-tab-pane>
           <el-tab-pane label="岗位信息">
+            <!-- 打印岗位信息：-->
+            <el-row type="flex" justify="end">
+              <el-tooltip content="打印岗位信息">
+                <router-link :to="`/employees/print/${userId}?type=job`">
+                  <i class="el-icon-printer" />
+                </router-link>
+              </el-tooltip>
+            </el-row>
             <component :is="jobComponent"></component>
           </el-tab-pane>
         </el-tabs>
