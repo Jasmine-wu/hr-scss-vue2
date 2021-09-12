@@ -89,7 +89,12 @@
               <el-button type="text" size="small">转正</el-button>
               <el-button type="text" size="small">调岗</el-button>
               <el-button type="text" size="small">离职</el-button>
-              <el-button type="text" size="small">角色</el-button>
+              <el-button
+                type="text"
+                size="small"
+                @click="showAssignRoleDialog(row.id)"
+                >角色</el-button
+              >
               <el-button
                 type="text"
                 size="small"
@@ -128,6 +133,12 @@
         <canvas ref="myCanvas"></canvas>
       </el-row>
     </el-dialog>
+
+    <!-- 分配角色弹层 -->
+    <dialog-role-assign
+      ref="roleAssign"
+      :isShow.sync="isShowAssignRoleDialog"
+    ></dialog-role-assign>
   </div>
 </template>
 
@@ -137,9 +148,11 @@ import DialogEmployeeAdd from "@/views/employees/components/dialog-employee-add.
 import { formatDate } from "@/filters";
 import EmployeeEnum from "@/api/constant/employees";
 import QrCode from "qrcode";
+import DialogRoleAssign from "@/views/employees/components/dialog-role-assign.vue";
 export default {
   components: {
     DialogEmployeeAdd,
+    DialogRoleAssign,
   },
   data() {
     return {
@@ -152,6 +165,7 @@ export default {
       },
       isShowDialog: false, //是否显示添加员工弹层
       isShowQrCodeDialog: false, //是否显示查看二维码弹层
+      isShowAssignRoleDialog: false, //是否显示分配角色弹层
     };
   },
   created() {
@@ -268,6 +282,11 @@ export default {
       } else {
         this.$message.warning("该用户还未上传头像");
       }
+    },
+    // 点击角色
+    async showAssignRoleDialog(userId) {
+      await this.$refs.roleAssign.getUserRoleIds(userId);
+      this.isShowAssignRoleDialog = true;
     },
   },
 };
