@@ -38,6 +38,10 @@ Object.keys(filters).forEach(key => {
     Vue.filter(key, filters[key]);
 });
 
+// 注册全局混入对象
+import CheckPermission from "@/mixins/checkPermission"
+Vue.mixin(CheckPermission); //这样混入以后所有组件都拥有了checkPermission（key）方法
+
 // set ElementUI lang to EN
 Vue.use(ElementUI, { locale })
     // 如果想要中文版 element-ui，按如下方式声明

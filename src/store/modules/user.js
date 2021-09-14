@@ -1,5 +1,7 @@
 import { getToken, setToken, removeToken, setTimeStamp } from "@/utils/auth";
 import { login, getUserInfo, getUserDetailById } from "@/api/user";
+import { resetRouter } from "@/router"
+
 
 const state = {
     token: getToken(), //token初始状态
@@ -58,6 +60,19 @@ const actions = {
         context.commit('removeToken');
         // 删除用户数据
         context.commit('removeUserInfo');
+
+        // 重置路由
+        resetRouter();
+        // 重置permission模块中routes值
+        // vuex子模块中如何调用另一个子模块中的mutations/actions？
+        // 分析：
+        // 没有加namespaced的模块，mutations和actions是挂在全局的，直接调用
+        // context.commit("setRoutes", []);
+
+        // 加了namespaced：
+        // commit第三个参数：{root:true}: 调用当前模块父模块
+        // permission/setRoutes： 结合root:true，即调用父模块下permission模块里的setRoutes
+        context.commit("permission/setRoutes", [], { root: true });
     }
 
 };

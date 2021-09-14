@@ -32,11 +32,14 @@ import variables from "@/styles/variables.scss";
 export default {
   components: { SidebarItem, Logo },
   computed: {
-    ...mapGetters(["sidebar"]),
+    ...mapGetters(["sidebar", "routes"]),
+
     // 计算属性routes，来源于所有的路由
-    routes() {
-      return this.$router.options.routes;
-    },
+    // 注意：this.$router.options.routes只能获取到静态路由，即router初始化时注册的路由表添加的路由
+    // routes() {
+    //   return this.$router.options.routes;
+    // },
+    // ...mapGetters(["routes"]),
     activeMenu() {
       const route = this.$route;
       const { meta, path } = route;

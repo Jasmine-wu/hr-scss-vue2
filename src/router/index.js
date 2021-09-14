@@ -53,12 +53,12 @@ export const constantRoutes = [{
         }]
     },
 
-    { path: '*', redirect: '/404', hidden: true }
+    // { path: '*', redirect: '/404', hidden: true } //404路由应放到动态路由最后面
 ];
 
 
-// 动态路由： 有响应权限的人才可以访问
-const asyncRoutes = [
+// 动态路由： 有相应权限的人才可以访问
+export const asyncRoutes = [
     approvalsRouter,
     departmentsRouter,
     employeesRouter,
@@ -72,13 +72,19 @@ const asyncRoutes = [
 const createRouter = () => new Router({
     // mode: 'history', // require service support
     scrollBehavior: () => ({ y: 0 }),
-    // 合并静态路由和动态路由
-    routes: [...constantRoutes, ...asyncRoutes],
+    // router初始化时，路由表只放入（人人都能访问的路由）静态路由
+    // 当具体用户登陆时，再根据获取到的用户拥有的实际权限筛选出满足用户权限的动态路由，然后动态添加到路由表中
+
+    // 动态路由和静态路由的临时合并
+    // routes:[...constantRoutes, ...asyncRoutes],
+    routes: [...constantRoutes],
 })
 
 const router = createRouter()
 
 // Detail see: https://github.com/vuejs/vue-router/issues/1234#issuecomment-357941465
+
+// 重新创建router实例，用于登出时重置路由
 export function resetRouter() {
     const newRouter = createRouter()
     router.matcher = newRouter.matcher // reset router

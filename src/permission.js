@@ -22,9 +22,22 @@ router.beforeEach(async(to, from, next) => {
 
         } else {
             // 不是，放行
-            // 获取用户信息
             if (!store.getters.userId) {
-                await store.dispatch('user/getUserInfo'); //强制等待，获取完了再跳转next
+                // 获取用户信息
+                //强制等待，成功获取用户信息以后再跳转路由
+                const { roles } = await store.dispatch('user/getUserInfo');
+
+                // 注意:dispatch操作返回的是Promise对象，Promise对象return返回的结果用await获取
+                // 筛选满足用户权限的动态路由
+                const routes = await store.dispatch("permission/filterRoutes", roles.menus);
+
+                // 动态添加满足权限的路由至路由表
+                // 并将404路由放到动态路由末尾
+                router.addRoutes([...routes, { path: '*', redirect: '/404', hidden: true }]);
+
+                // 注意：动态添加完动态路由之后，必须使用next(to.path)， 而不是next();
+                // 这是它自身的bug
+                next(to.path);
             }
             next();
         }
