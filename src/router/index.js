@@ -11,6 +11,7 @@ import attendancesRouter from './modules/attendances'
 import salarysRouter from './modules/salarys'
 import settingRouter from './modules/setting'
 import socialRouter from './modules/social'
+import userRouter from "./modules/user"
 
 Vue.use(Router)
 
@@ -53,6 +54,7 @@ export const constantRoutes = [{
         }]
     },
 
+    userRouter,
     // { path: '*', redirect: '/404', hidden: true } //404路由应放到动态路由最后面
 ];
 
