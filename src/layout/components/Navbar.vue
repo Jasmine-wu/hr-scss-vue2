@@ -18,7 +18,9 @@
 
     <!-- 右侧下拉菜单 -->
     <div class="right-menu">
-      <!-- 全凭组件 -->
+      <!-- 多语言切换组件 -->
+      <lang-switch></lang-switch>
+      <!-- 全屏组件 -->
       <screen-full class="right-menu-item" />
 
       <el-dropdown class="avatar-container" trigger="click">

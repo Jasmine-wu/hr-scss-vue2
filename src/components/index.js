@@ -3,6 +3,7 @@ import UploadExcel from "@/components/UploadExcel"
 import UploadImage from "@/components/UploadImage"
 import Print from "vue-print-nb"
 import ScreenFull from '@/components/ScreenFull'
+import LangSwitch from "@/components/LangSwitch"
 
 
 export default {
@@ -11,6 +12,8 @@ export default {
         Vue.component("UploadExcel", UploadExcel);
         Vue.component("UploadImage", UploadImage);
         Vue.use(Print);
-        Vue.component('ScreenFull', ScreenFull) // 注册全屏组件
+        Vue.component('ScreenFull', ScreenFull) // 注册全屏切换组件
+        Vue.component('LangSwitch', LangSwitch) // 注册多语言切换组件
+
     }
 }

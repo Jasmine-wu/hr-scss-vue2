@@ -17,7 +17,7 @@
           <!-- item里面显示的icon,title全部来自于路由元信息！ -->
           <item
             :icon="onlyOneChild.meta.icon || (item.meta && item.meta.icon)"
-            :title="onlyOneChild.meta.title"
+            :title="$t('route.' + onlyOneChild.name)"
           />
         </el-menu-item>
       </app-link>

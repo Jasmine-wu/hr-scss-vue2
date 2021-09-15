@@ -15,6 +15,9 @@ import router from './router'
 import '@/icons' // icon
 import '@/permission' // permission control
 
+// 引入多语言
+import i18n from "@/lang"
+
 // 统一注册全局组件
 import components from '@/components'
 Vue.use(components);
@@ -43,9 +46,18 @@ import CheckPermission from "@/mixins/checkPermission"
 Vue.mixin(CheckPermission); //这样混入以后所有组件都拥有了checkPermission（key）方法
 
 // set ElementUI lang to EN
-Vue.use(ElementUI, { locale })
-    // 如果想要中文版 element-ui，按如下方式声明
-    // Vue.use(ElementUI)
+// Vue.use(ElementUI, { locale })
+
+// 如果想要中文版 element-ui，按如下方式声明
+// Vue.use(ElementUI)
+
+// elment-ui本身是支持i18n的
+Vue.use(ElementUI, {
+    // i18n选项是一个回调函数
+    // 传入key,value,i18n会根据当前的local属性去加载对应的语言包
+    i18n: (key, value) => i18n.t(key), //t方法会去对应的语言包里找对应的内容
+});
+
 
 Vue.config.productionTip = false
 
@@ -53,5 +65,7 @@ new Vue({
     el: '#app',
     router,
     store,
+    // 挂载i18n，这样所有实例都拥有了$t函数
+    i18n,
     render: h => h(App)
 })

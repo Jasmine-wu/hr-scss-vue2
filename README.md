@@ -326,8 +326,48 @@
             - 核心两个方法：
                 - 全屏：document.documentElement.requestFullscreen()
                 - 退出全屏：document.exitFullscreen()
-                
+
             - 我们这里使用全屏显示插件screenfull
+
+        - 32 多语言切换（重点）
+            - 多语言又称国际化
+            - 这里采用国际化i18n方法
+                - 1.yarn add vue-i18n
+                - 2.新建实例化vue-i18n文件:src/lang/index.js
+                    - 配置locale选项 - 当前是那种语言
+                    - 配置messages选项 - 各个语言对应加载哪些语言包
+                - 3.将实例挂载到所有Vue实例上（main.js）=》这样所有vue实例都拥有 $t 函数
+                - 4.第三方组件库element-ui多语言如何应用？
+                    - 1.在i18n实例文件里,导入element-ui多语言语言包，配置好messages选项
+                    - 2.让多语言包生效，local是zh的时候，显示中文，local是en事，显示英文：
+                        ```js
+                            // elment-ui本身支持i18n的处理
+                            // 如何处理？
+                            // 根据传入key,i18n会根据当前的local属性去加载对应的语言包里对应内容（element-ui已经帮我们做好）
+                            Vue.use(ElementUI, {
+                             // i18n选项是一个回调函数
+                                i18n: (key, value) => i18n.t(key), //t方法会去对应的语言包里找对应的内容
+                            });
+                        ```
+                - 5. 自定义vue组件多语言如何应用？
+                    - 1. 先写好多语言文件, zh.js/en/js/ja.js等，如何写参考elemnt-ui多语言文件是怎么写
+                    - 2. 在i18n实例文件里，导入自定义多语言包，配置好messages选项
+                    - 3. 让自定义多语言文件生效
+                        - i18n会根据local属性值，自动加载对应语言包，因此我们需要做的就是告诉组件你要显示语言包里的哪个内容
+                        - 所有自定子组件设计多语言的部分都如下获取：
+                        ```js
+                        //onlyOneChild.name是多语言文件下的key值
+                             :title="$t('route.' + onlyOneChild.name)"
+                        ```
+                - 6. 动态切换语言
+                    - 即：改变i18n实例里local值
+                        ```js
+                             // 数据持久化
+                            Cookie.set("lang", lang);
+                             // 设置当前语言
+                             this.$i18n.locale = lang;
+                        ```
+
 
 
 

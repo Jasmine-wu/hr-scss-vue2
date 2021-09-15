@@ -8,6 +8,7 @@ export default {
             path: '', //什么都不写：/employees显示/views/employees
             component: () =>
                 import ('@/views/approvals'),
+            name: 'approvals', //为啥这里要有name？ 为了做侧边栏多语言，name可以做侧边栏多语言的key值
             meta: {
                 title: '审批', //左边菜单导航栏item的标题来自路由的元信息里的title
                 icon: 'tree-table', //左边菜单导航栏item的icon来自路由的元信息里的icon，icon图标加载的是src/icons/svg里的vvg图片
