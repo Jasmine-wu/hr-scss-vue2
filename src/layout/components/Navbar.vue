@@ -15,10 +15,12 @@
       江苏省杭州市真相财经责任有限公司
       <span class="breadBtn">体验版</span>
     </div>
-    <!-- 头部标题 -->
 
     <!-- 右侧下拉菜单 -->
     <div class="right-menu">
+      <!-- 全凭组件 -->
+      <screen-full class="right-menu-item" />
+
       <el-dropdown class="avatar-container" trigger="click">
         <div class="avatar-wrapper">
           <!-- 解决vue img src动态绑定，本地图片加载不出来的问题 -->
@@ -146,7 +148,7 @@ export default {
       height: 100%;
       font-size: 18px;
       color: #5a5e66;
-      vertical-align: text-bottom;
+      vertical-align: middle;
 
       &.hover-effect {
         cursor: pointer;

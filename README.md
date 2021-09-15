@@ -2,7 +2,8 @@
     - 桌面web项目
     - vue-element-template + vuex + vue-router+ elementUI + sass(scss)
     - qrcode：生成二维码插件
-    - vue-print-nb：打印组件
+    - vue-print-nb：打印功能
+    - screenfull: 页面全屏显示
 
 ## 主要功能
     - 1.表单校验
@@ -320,6 +321,13 @@
         - 30 雷达图组件封装
             - yarn add echarts
             - 按需引入echarts雷达图
+
+        - 31 页面的全屏功能
+            - 核心两个方法：
+                - 全屏：document.documentElement.requestFullscreen()
+                - 退出全屏：document.exitFullscreen()
+                
+            - 我们这里使用全屏显示插件screenfull
 
 
 

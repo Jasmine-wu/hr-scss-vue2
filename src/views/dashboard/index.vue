@@ -86,7 +86,9 @@
             >
             <el-button class="sideBtn">请假调休</el-button>
             <el-button class="sideBtn">审批列表</el-button>
-            <el-button class="sideBtn">我的信息</el-button>
+            <el-button class="sideBtn" @click="$router.push('/users/info')"
+              >我的信息</el-button
+            >
           </div>
         </el-card>
 
