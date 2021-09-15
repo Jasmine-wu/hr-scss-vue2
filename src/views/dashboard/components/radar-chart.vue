@@ -8,11 +8,11 @@
 // 1. 引入echarts主模块
 var echarts = require("echarts/lib/echarts");
 // 2. 引入雷达图
-// require("echarts/lib/chart/radar");
+require("echarts/lib/chart/radar");
 
 // 引入提示框和标题组件
 // require("echarts/lib/component/tooltip");
-// require("echarts/lib/component/title");
+require("echarts/lib/component/title");
 
 export default {
   created() {},
