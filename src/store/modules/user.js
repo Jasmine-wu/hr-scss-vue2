@@ -47,6 +47,7 @@ const actions = {
     async getUserInfo(context) {
         // 获取用户资料
         const data = await getUserInfo();
+        console.log(data);
         // 获取用户基本信息
         const baseInfo = await getUserDetailById(data.userId);
         // 合并两个对象数据
