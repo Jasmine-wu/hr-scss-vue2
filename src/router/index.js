@@ -72,7 +72,11 @@ export const asyncRoutes = [
 ];
 
 const createRouter = () => new Router({
-    // mode: 'history', // require service support
+
+    // 配置打包之前的路由模式为history
+    mode: 'history',
+    // 配置项目的路由前缀地址
+    base: "/admin/", //http://localhost:7777/hr/dashboard 注意不要混淆:路由地址（展示给用户看的）和请求地址是两码事
     scrollBehavior: () => ({ y: 0 }),
     // router初始化时，路由表只放入（人人都能访问的路由）静态路由
     // 当具体用户登陆时，再根据获取到的用户拥有的实际权限筛选出满足用户权限的动态路由，然后动态添加到路由表中

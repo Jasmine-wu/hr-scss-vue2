@@ -1,7 +1,11 @@
 <template>
   <div class="add-form">
     <el-dialog title="设置" :visible.sync="dialogFormVisible">
-      <el-tabs v-model="activeName" style="margin-left:20px" @tab-click="handleClick">
+      <el-tabs
+        v-model="activeName"
+        style="margin-left: 20px"
+        @tab-click="handleClick"
+      >
         <el-tab-pane label="出勤设置" name="first">
           <el-form
             ref="dataForm"
@@ -9,11 +13,15 @@
             :model="formBase"
             label-position="right"
             label-width="100px"
-            style="width:700px;"
+            style="width: 700px"
             class="titmInfo"
           >
             <el-form-item label="部门：" prop="departmentId">
-              <el-select v-model="formBase.departmentId" placeholder="请选择" @change="handleChange">
+              <el-select
+                v-model="formBase.departmentId"
+                placeholder="请选择"
+                @change="handleChange"
+              >
                 <el-option
                   v-for="item in departmentData"
                   :key="item.id"
@@ -28,7 +36,7 @@
                 :picker-options="{
                   start: '00:00',
                   step: '00:05',
-                  end: '23:59'
+                  end: '23:59',
                 }"
                 :placeholder="formBase.morningStartTime"
                 class="timePicker"
@@ -38,7 +46,7 @@
                 :picker-options="{
                   start: '08:30',
                   step: '00:15',
-                  end: '18:30'
+                  end: '18:30',
                 }"
                 :placeholder="formBase.morningEndTime"
                 class="timePicker"
@@ -48,7 +56,7 @@
                 :picker-options="{
                   start: '08:30',
                   step: '00:15',
-                  end: '18:30'
+                  end: '18:30',
                 }"
                 :placeholder="formBase.afternoonStartTime"
                 class="timePicker"
@@ -58,7 +66,7 @@
                 :picker-options="{
                   start: '08:30',
                   step: '00:15',
-                  end: '18:30'
+                  end: '18:30',
                 }"
                 :placeholder="formBase.afternoonEndTime"
                 class="timePicker"
@@ -66,7 +74,9 @@
             </el-form-item>
           </el-form>
           <div class="el-dialog__footer dialog-footer">
-            <el-button type="primary" @click="handleAttendance">保存更新</el-button>
+            <el-button type="primary" @click="handleAttendance"
+              >保存更新</el-button
+            >
             <el-button @click="handleClose">取消</el-button>
           </div>
         </el-tab-pane>
@@ -95,7 +105,11 @@
             </el-form-item>
           </el-form>
           <p>假期类型</p>
-          <el-table ref="singleTable" :data="stateData.type" style="width: 100%">
+          <el-table
+            ref="singleTable"
+            :data="stateData.type"
+            style="width: 100%"
+          >
             <el-table-column prop="name" label="类型" width="200" />
             <el-table-column label="是否可用">
               <template slot-scope="scope">
@@ -144,7 +158,11 @@
               </el-select>
             </el-form-item>
           </el-form>
-          <el-table ref="singleTable" :data="stateData.departmentType" style="width: 100%">
+          <el-table
+            ref="singleTable"
+            :data="stateData.departmentType"
+            style="width: 100%"
+          >
             <el-table-column>
               <template slot-scope="scope">
                 <div>
@@ -153,11 +171,14 @@
                     v-model="scope.row.isEnable"
                     active-color="#13ce66"
                     inactive-color="#ff4949"
-                    @change="handleStatus($event,scope.row)"
+                    @change="handleStatus($event, scope.row)"
                   />
                 </div>
 
-                <div v-if="scope.row.dedTypeCode==='51000'" class="attentInfo">
+                <div
+                  v-if="scope.row.dedTypeCode === '51000'"
+                  class="attentInfo"
+                >
                   <p>
                     迟到≤
                     <el-input
@@ -198,7 +219,11 @@
                   </div>
                   <p>
                     迟到>
-                    <el-input v-model="scope.row.periodLowerLimit" class="inputInfo" disabled />分钟
+                    <el-input
+                      v-model="scope.row.periodLowerLimit"
+                      class="inputInfo"
+                      disabled
+                    />分钟
                   </p>
                   <div class="deductionInfo">
                     <p>
@@ -216,7 +241,10 @@
                     </p>
                   </div>
                 </div>
-                <div v-if="scope.row.dedTypeCode==='52000'" class="attentInfo">
+                <div
+                  v-if="scope.row.dedTypeCode === '52000'"
+                  class="attentInfo"
+                >
                   <p>
                     早退≤
                     <el-input
@@ -242,7 +270,11 @@
                     </p>
                     <p>
                       早退>
-                      <el-input v-model="scope.row.timesLowerLimit" class="inputInfo" disabled />次，每次扣款
+                      <el-input
+                        v-model="scope.row.timesLowerLimit"
+                        class="inputInfo"
+                        disabled
+                      />次，每次扣款
                       <el-input
                         v-model="scope.row.dedAmonutLowerLimit"
                         class="inputInfo"
@@ -252,9 +284,13 @@
                   </div>
                   <p>
                     早退>
-                    <el-input v-model="scope.row.periodLowerLimit" class="inputInfo" disabled />分钟
+                    <el-input
+                      v-model="scope.row.periodLowerLimit"
+                      class="inputInfo"
+                      disabled
+                    />分钟
                   </p>
-                  <div style="padding-left:120px;">
+                  <div style="padding-left: 120px">
                     <p>
                       早退>
                       <el-input
@@ -270,7 +306,10 @@
                     </p>
                   </div>
                 </div>
-                <div v-if="scope.row.dedTypeCode==='53000'" class="attentInfo">
+                <div
+                  v-if="scope.row.dedTypeCode === '53000'"
+                  class="attentInfo"
+                >
                   <p>
                     矿工按
                     <el-input
@@ -284,7 +323,9 @@
             </el-table-column>
           </el-table>
           <div class="el-dialog__footer dialog-footer">
-            <el-button type="primary" @click="handleDeductions">保存更新</el-button>
+            <el-button type="primary" @click="handleDeductions"
+              >保存更新</el-button
+            >
             <el-button @click="handleClose">取消</el-button>
           </div>
         </el-tab-pane>
@@ -295,7 +336,6 @@
             :rules="overtimeRule"
             label-width="110px"
           >
-
             <el-form-item label="部门：" prop="departmentId">
               <el-select
                 v-model="overtimeBase.departmentId"
@@ -311,7 +351,11 @@
               </el-select>
             </el-form-item>
             <el-form-item label="加班规则：">
-              <div v-for="item in overtimeBase.rules" :key="item.id" class="ruleInfo">
+              <div
+                v-for="item in overtimeBase.rules"
+                :key="item.id"
+                class="ruleInfo"
+              >
                 <el-row>
                   <el-col :span="8">
                     <div class="grid-content bg-purple">
@@ -322,7 +366,9 @@
                   <el-col :span="16">
                     <div class="grid-content bg-purple-light">
                       <span class="pad">
-                        <el-checkbox v-model="item.isTimeOff">调休假</el-checkbox>
+                        <el-checkbox v-model="item.isTimeOff"
+                          >调休假</el-checkbox
+                        >
                       </span>
                       <template>
                         <el-time-select
@@ -330,10 +376,10 @@
                           :picker-options="{
                             start: '01:00',
                             step: '00:15',
-                            end: '23:59'
+                            end: '23:59',
                           }"
-                          style="width:100px;"
-                          :disabled="item.isTimeOff===false"
+                          style="width: 100px"
+                          :disabled="item.isTimeOff === false"
                         />
                         <el-time-select
                           v-model="item.ruleEndTime"
@@ -341,10 +387,10 @@
                             start: '01:00',
                             step: '00:15',
                             end: '23:59',
-                            minTime: item.startTime
+                            minTime: item.startTime,
                           }"
-                          style="width:100px;"
-                          :disabled="item.isTimeOff===false"
+                          style="width: 100px"
+                          :disabled="item.isTimeOff === false"
                         />
                       </template>
                     </div>
@@ -353,7 +399,9 @@
               </div>
             </el-form-item>
             <el-form-item label="打卡验证：" prop="isClock">
-              <el-switch v-model="overtimeBase.isClock" />&nbsp;&nbsp;加班需要有打卡记录
+              <el-switch
+                v-model="overtimeBase.isClock"
+              />&nbsp;&nbsp;加班需要有打卡记录
             </el-form-item>
             <el-form-item label="开启补偿：" prop="isCompensationint">
               <el-switch v-model="overtimeBase.isCompensationint" />
@@ -365,7 +413,7 @@
                   v-model="overtimeBase.latestEffectDate"
                   type="date"
                   placeholder="选择日期"
-                  style="width:150px;"
+                  style="width: 150px"
                 />
               </div>
             </el-form-item>
@@ -373,13 +421,15 @@
               <div class="ruleInfo">
                 <p>
                   请假最小单位
-                  <el-input v-model="overtimeBase.unit" style="width:50px" />天
+                  <el-input v-model="overtimeBase.unit" style="width: 50px" />天
                 </p>
               </div>
             </el-form-item>
           </el-form>
           <div class="el-dialog__footer dialog-footer">
-            <el-button type="primary" @click="handleOvertime">保存更新</el-button>
+            <el-button type="primary" @click="handleOvertime"
+              >保存更新</el-button
+            >
             <el-button @click="handleClose">取消</el-button>
           </div>
         </el-tab-pane>
@@ -389,9 +439,9 @@
 </template>
 
 <script>
-import { addEmployee } from '@/api/employees'
-import { getInteger, getIntegerPoint } from '@/filters'
-import { getDepartments } from '@/api/departments'
+import { addEmployee } from "@/api/employees";
+import { getInteger, getIntegerPoint } from "@/filters";
+import { getDepartments } from "@/api/departments";
 import {
   attendanceSave,
   getAttendance,
@@ -400,347 +450,351 @@ import {
   deductionsSave,
   getDeductions,
   overtimeSave,
-  getOvertime
-} from '@/api/attendances'
-import attendanceApi from '@/api/constant/attendance'
-import * as commonApi from '@/utils'
+  getOvertime,
+} from "@/api/attendances";
+import attendanceApi from "@/api/constant/attendance";
+import * as commonApi from "@/utils";
 export default {
-  name: 'Add',
+  name: "Add",
   props: [],
   data() {
     return {
       dialogFormVisible: false,
       isShowSelect: false,
-      formOfEmployment: '',
-      activeName: 'first',
+      formOfEmployment: "",
+      activeName: "first",
       formBase: {
-        morningStartTime: '',
-        morningEndTime: '',
-        afternoonStartTime: '',
-        afternoonEndTime: '',
-        departmentId: ''
+        morningStartTime: "",
+        morningEndTime: "",
+        afternoonStartTime: "",
+        afternoonEndTime: "",
+        departmentId: "",
       },
       leaveBase: {
-        departmentId: ''
+        departmentId: "",
       },
       deductionsBase: {
-        departmentId: ''
+        departmentId: "",
       },
       overtimeBase: {
-        departmentId: '',
+        departmentId: "",
         isClock: false,
         isCompensationint: false,
-        latestEffectDate: '',
-        unit: '',
-        rules: attendanceApi.overtimeType
+        latestEffectDate: "",
+        unit: "",
+        rules: attendanceApi.overtimeType,
       },
       departmentData: [],
       stateData: [],
       tylelist: [],
       deductionList: [],
-      oldNum: '',
+      oldNum: "",
       rules: {
         // 表单验证
         // name: [{ required: true, message: "请输入活动名称", trigger: "blur" }],
         departmentId: [
-          { required: true, message: '请选择部门', trigger: 'change' }
+          { required: true, message: "请选择部门", trigger: "change" },
         ],
         morningStartTime: [
-          { required: true, message: '请选择时间', trigger: 'change' }
-        ]
+          { required: true, message: "请选择时间", trigger: "change" },
+        ],
       },
       overtimeRule: {
         // 表单验证
         unit: [
-          { required: true, message: '调休单位不能为空(', trigger: 'blur' }
+          { required: true, message: "调休单位不能为空(", trigger: "blur" },
         ],
         departmentId: [
-          { required: true, message: '请选择部门', trigger: 'change' }
+          { required: true, message: "请选择部门", trigger: "change" },
         ],
         isClock: [
-          { required: true, message: '请选择打卡验证', trigger: 'change' }
+          { required: true, message: "请选择打卡验证", trigger: "change" },
         ],
         isCompensationint: [
-          { required: true, message: '请选择补偿', trigger: 'change' }
+          { required: true, message: "请选择补偿", trigger: "change" },
         ],
         latestEffectDate: [
-          { required: true, message: '请选择时间', trigger: 'change' }
-        ]
-      }
-    }
+          { required: true, message: "请选择时间", trigger: "change" },
+        ],
+      },
+    };
   },
   computed: {
     inpNum() {
-      return this.oldNum
-    }
+      return this.oldNum;
+    },
   },
   // 创建完毕状态
   created() {
-    this.getDepartments() // 获取部门数据
-    this.stateData = attendanceApi
+    this.getDepartments(); // 获取部门数据
+    this.stateData = attendanceApi;
   },
   methods: {
     // 业务方法
     // 获取部门
     async getDepartments() {
-      const { depts } = await getDepartments()
-      this.departmentData = depts
-      this.formBase.departmentId = this.leaveBase.departmentId = this.deductionsBase.departmentId = this.overtimeBase.departmentId = this.departmentData[0].id
-      this.handleChange(this.leaveBase.departmentId)
+      const { depts } = await getDepartments();
+      this.departmentData = depts;
+      this.formBase.departmentId =
+        this.leaveBase.departmentId =
+        this.deductionsBase.departmentId =
+        this.overtimeBase.departmentId =
+          this.departmentData[0].id;
+      this.handleChange(this.leaveBase.departmentId);
     },
     // 弹层显示
     dialogFormV() {
-      this.dialogFormVisible = true
+      this.dialogFormVisible = true;
     },
     // 弹层隐藏
     dialogFormH() {
-      this.dialogFormVisible = false
+      this.dialogFormVisible = false;
     },
     clearFormDate() {
-      this.formBase = {}
+      this.formBase = {};
     },
     // 退出
     handleClose() {
-      this.dialogFormH()
-      this.clearFormDate()
+      this.dialogFormH();
+      this.clearFormDate();
     },
     // 界面交互
     // 表单提交
     createData() {
-      this.formBase.formOfEmployment = this.formOfEmployment
-      this.$refs.dataForm.validate(async valid => {
+      this.formBase.formOfEmployment = this.formOfEmployment;
+      this.$refs.dataForm.validate(async (valid) => {
         if (valid) {
-          await addEmployee(this.formBase)
-          this.$emit('clearFormDate', this.formBase)
-          this.formBase = {}
-          this.$emit('doQuery', this.requestParameters)
-          this.dialogFormVisible = false
+          await addEmployee(this.formBase);
+          this.$emit("clearFormDate", this.formBase);
+          this.formBase = {};
+          this.$emit("doQuery", this.requestParameters);
+          this.dialogFormVisible = false;
         }
-      })
+      });
     },
     // 出勤选择部门
     async handleChange(val) {
-      this.formBase = await getAttendance({ departmentId: val })
+      this.formBase = await getAttendance({ departmentId: val });
     },
     // 请假选择部门
     async handleChangeLeave(val) {
-      this.leaveBase.departmentId = val
-      this.stateData.type.forEach(item => {
-        item.isEnable = false
-        item.departmentId = val
-      })
-      const res = await getLeave({ departmentId: val })
-      res.forEach(item => {
+      this.leaveBase.departmentId = val;
+      this.stateData.type.forEach((item) => {
+        item.isEnable = false;
+        item.departmentId = val;
+      });
+      const res = await getLeave({ departmentId: val });
+      res.forEach((item) => {
         if (item.isEnable === 0) {
-          item.isEnable = true
+          item.isEnable = true;
         } else {
-          item.isEnable = false
+          item.isEnable = false;
         }
-        this.stateData.type.forEach(val => {
+        this.stateData.type.forEach((val) => {
           if (val.leaveType === item.leaveType) {
-            val.isEnable = item.isEnable
+            val.isEnable = item.isEnable;
           }
-        })
-      })
+        });
+      });
     },
     // 扣款选择部门
-    async  handleChangeDeductions(val) {
-      this.deductionsBase.departmentId = val
-      this.stateData.departmentType.forEach(item => {
-        item.departmentId = val
-        item.isEnable = false
-      })
-      const res = await getDeductions({ departmentId: val }).then(res => {
-
-      })
-      res.forEach(item => {
+    async handleChangeDeductions(val) {
+      this.deductionsBase.departmentId = val;
+      this.stateData.departmentType.forEach((item) => {
+        item.departmentId = val;
+        item.isEnable = false;
+      });
+      const res = await getDeductions({ departmentId: val }).then((res) => {});
+      res.forEach((item) => {
         if (item.isEnable === 0) {
-          item.isEnable = true
+          item.isEnable = true;
         } else {
-          item.isEnable = false
+          item.isEnable = false;
         }
-        this.stateData.departmentType.forEach(val => {
+        this.stateData.departmentType.forEach((val) => {
           if (val.dedTypeCode === item.dedTypeCode) {
-            val.isEnable = item.isEnable
+            val.isEnable = item.isEnable;
           }
-        })
-      })
+        });
+      });
     },
     // 加班选择部门
     async handleChangeovertime(val) {
-      this.overtimeBase.departmentId = val
-      this.overtimeBase.rules.forEach(item => {
-        item.departmentId = val
-        item.isEnable = item.isTimeOff = false
-        item.ruleEndTime = item.ruleStartTime = ''
-      })
-      this.overtimeBase.latestEffectDate = ''
-      this.overtimeBase.unit = ''
-      this.overtimeBase.isClock = this.overtimeBase.isCompensationint = false
-      const data = await getOvertime({ departmentId: val })
+      this.overtimeBase.departmentId = val;
+      this.overtimeBase.rules.forEach((item) => {
+        item.departmentId = val;
+        item.isEnable = item.isTimeOff = false;
+        item.ruleEndTime = item.ruleStartTime = "";
+      });
+      this.overtimeBase.latestEffectDate = "";
+      this.overtimeBase.unit = "";
+      this.overtimeBase.isClock = this.overtimeBase.isCompensationint = false;
+      const data = await getOvertime({ departmentId: val });
       if (data.dayOffConfigs !== null || data.extraDutyConfig !== null) {
-        this.overtimeBase.departmentId = data.dayOffConfigs.departmentId
+        this.overtimeBase.departmentId = data.dayOffConfigs.departmentId;
         this.overtimeBase.latestEffectDate =
-              data.dayOffConfigs.latestEffectDate
-        this.overtimeBase.unit = data.dayOffConfigs.unit
-        this.overtimeBase.isClock = data.extraDutyConfig.isClock
+          data.dayOffConfigs.latestEffectDate;
+        this.overtimeBase.unit = data.dayOffConfigs.unit;
+        this.overtimeBase.isClock = data.extraDutyConfig.isClock;
         this.overtimeBase.isCompensationint =
-              data.extraDutyConfig.isCompensationint
+          data.extraDutyConfig.isCompensationint;
       }
       if (this.overtimeBase.isClock === 0) {
-        this.overtimeBase.isClock = true
+        this.overtimeBase.isClock = true;
       } else {
-        this.overtimeBase.isClock = false
+        this.overtimeBase.isClock = false;
       }
       if (this.overtimeBase.isCompensationint === 0) {
-        this.overtimeBase.isClock = true
+        this.overtimeBase.isClock = true;
       } else {
-        this.overtimeBase.isCompensationint = false
+        this.overtimeBase.isCompensationint = false;
       }
       if (data.extraDutyRuleList.length > 0) {
-        data.extraDutyRuleList.forEach(item => {
+        data.extraDutyRuleList.forEach((item) => {
           if (item.isEnable === 0) {
-            item.isEnable = true
+            item.isEnable = true;
           } else {
-            item.isEnable = false
+            item.isEnable = false;
           }
           if (item.isTimeOff === 0) {
-            item.isTimeOff = true
+            item.isTimeOff = true;
           } else {
-            item.isTimeOff = false
+            item.isTimeOff = false;
           }
-        })
-        this.overtimeBase.rules = data.extraDutyRuleList
+        });
+        this.overtimeBase.rules = data.extraDutyRuleList;
       }
     },
     // 考勤配置保存更新
-    async  handleAttendance() {
-      this.$refs.dataForm.validate(async valid => {
+    async handleAttendance() {
+      this.$refs.dataForm.validate(async (valid) => {
         if (valid) {
-          await attendanceSave(this.formBase)
-          this.$emit('dataSearch')
-          this.handleClose()
+          await attendanceSave(this.formBase);
+          this.$emit("dataSearch");
+          this.handleClose();
         }
-      })
+      });
     },
     // 请假配置保存更新
     handleLeave() {
-      this.$refs.leaveForm.validate(async valid => {
+      this.$refs.leaveForm.validate(async (valid) => {
         if (valid) {
-          this.tylelist = this.stateData.type
-          this.tylelist.forEach(item => {
+          this.tylelist = this.stateData.type;
+          this.tylelist.forEach((item) => {
             if (item.isEnable) {
-              item.isEnable = '0'
+              item.isEnable = "0";
             } else {
-              item.isEnable = '1'
+              item.isEnable = "1";
             }
-          })
-          await leaveSave(this.tylelist)
-          this.$emit('dataSearch')
-          this.handleClose()
+          });
+          await leaveSave(this.tylelist);
+          this.$emit("dataSearch");
+          this.handleClose();
         }
-      })
+      });
     },
     // 扣款配置保存更新
     handleDeductions() {
-      this.$refs.deductionsForm.validate(async valid => {
+      this.$refs.deductionsForm.validate(async (valid) => {
         if (valid) {
-          var deductionList = this.stateData.departmentType
-          deductionList.forEach(item => {
+          var deductionList = this.stateData.departmentType;
+          deductionList.forEach((item) => {
             if (item.isEnable) {
-              item.isEnable = '0'
+              item.isEnable = "0";
             } else {
-              item.isEnable = '1'
+              item.isEnable = "1";
             }
-          })
-          await deductionsSave(deductionList)
-          this.$emit('dataSearch')
-          this.handleClose()
+          });
+          await deductionsSave(deductionList);
+          this.$emit("dataSearch");
+          this.handleClose();
         }
-      })
+      });
     },
     // 加班配置保存更新
     handleOvertime() {
-      this.$refs.overtimeForm.validate(async valid => {
+      this.$refs.overtimeForm.validate(async (valid) => {
         if (valid) {
-          var deductionList = this.overtimeBase
-          deductionList.latestEffectDate = commonApi.transListToTreeData(
+          var deductionList = this.overtimeBase;
+          deductionList.latestEffectDate = commonApi.transListToTree(
             deductionList.latestEffectDate
-          )
+          );
           if (deductionList.isClock === true) {
-            deductionList.isClock = '0'
+            deductionList.isClock = "0";
           } else {
-            deductionList.isClock = '1'
+            deductionList.isClock = "1";
           }
           if (deductionList.isCompensationint === true) {
-            deductionList.isCompensationint = '0'
+            deductionList.isCompensationint = "0";
           } else {
-            deductionList.isCompensationint = '1'
+            deductionList.isCompensationint = "1";
           }
-          deductionList.rules.forEach(item => {
+          deductionList.rules.forEach((item) => {
             if (item.isEnable === true) {
-              item.isEnable = '0'
+              item.isEnable = "0";
             } else {
-              item.isEnable = '1'
+              item.isEnable = "1";
             }
             if (item.isTimeOff === true) {
-              item.isTimeOff = '0'
+              item.isTimeOff = "0";
             } else {
-              item.isTimeOff = '1'
+              item.isTimeOff = "1";
             }
-          })
-          await overtimeSave(deductionList)
-          this.$emit('dataSearch')
-          this.handleClose()
+          });
+          await overtimeSave(deductionList);
+          this.$emit("dataSearch");
+          this.handleClose();
         }
-      })
+      });
     },
     // 点击设置标签
     handleClick(tab, event) {
-      if (tab.index === '0') {
-        if (this.formBase.departmentId !== '') {
-          this.handleChange(this.formBase.departmentId)
+      if (tab.index === "0") {
+        if (this.formBase.departmentId !== "") {
+          this.handleChange(this.formBase.departmentId);
         }
       }
-      if (tab.index === '1') {
-        if (this.leaveBase.departmentId !== '') {
-          this.handleChangeLeave(this.leaveBase.departmentId)
+      if (tab.index === "1") {
+        if (this.leaveBase.departmentId !== "") {
+          this.handleChangeLeave(this.leaveBase.departmentId);
         }
-      } else if (tab.index === '2') {
-        if (this.deductionsBase.departmentId !== '') {
-          this.handleChangeDeductions(this.deductionsBase.departmentId)
+      } else if (tab.index === "2") {
+        if (this.deductionsBase.departmentId !== "") {
+          this.handleChangeDeductions(this.deductionsBase.departmentId);
         }
       } else {
-        if (this.overtimeBase.departmentId !== '') {
-          this.handleChangeovertime(this.overtimeBase.departmentId)
+        if (this.overtimeBase.departmentId !== "") {
+          this.handleChangeovertime(this.overtimeBase.departmentId);
         }
       }
     },
     typeTip(obj) {
-      this.$message.error(obj)
+      this.$message.error(obj);
     },
     // 验证输入正整数
-    handleInput: function(e) {
-      getInteger(e, this.typeTip)
+    handleInput: function (e) {
+      getInteger(e, this.typeTip);
     },
     // 获取小数点后1位
     handleInputPoint(e) {
-      getIntegerPoint(e)
+      getIntegerPoint(e);
     },
     //
     handleStatus(e, obj) {
-      obj.departmentId = this.deductionsBase.departmentId
-      if (this.deductionsBase.departmentId === '') {
-        this.$message.error('请选择部门')
-        return false
+      obj.departmentId = this.deductionsBase.departmentId;
+      if (this.deductionsBase.departmentId === "") {
+        this.$message.error("请选择部门");
+        return false;
       }
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
 <style rel="stylesheet/scss" lang="scss">
-.inputInfo{width: 50px;}
+.inputInfo {
+  width: 50px;
+}
 
 .attentInfo {
   p {

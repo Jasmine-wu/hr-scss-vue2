@@ -15,6 +15,46 @@ const name = defaultSettings.title || 'vue Admin Template' // page title
 // port = 9528 npm run dev OR npm run dev --port = 9528
 const port = process.env.port || process.env.npm_config_port || 9528 // dev port
 
+// 引入放到cdn服务器上的几个大文件
+// 判断环境，只有在生产环境，菜做打包排除和cdn注入
+const isPro = process.env.NODE_ENV === "production";
+let cdn = { css: [], js: [] }; //cdn配置文件
+let externals = {}; //排除项
+if (isPro) {
+    //1. webpack排除打包的包
+    // key:value, 要排除的包名：实际引入的包的全局变量名
+    // 本项目中，我们实际将大包放到了CDN上，因此这里的value指的是CDN服务器上该包的全局变量
+    externals = {
+        "vue": "Vue",
+        'element-ui': 'ELEMENT',
+        'xlsx': 'XLSX'
+    };
+
+    // 2.cdn配置文件
+    // 这里将这个大包放到了cdn服务器上
+    cdn = {
+        css: [
+            // element-ui css
+            'https://unpkg.com/element-ui/lib/theme-chalk/index.css' // 样式表
+        ],
+        js: [
+            // vue must at first!
+            'https://unpkg.com/vue/dist/vue.js', // vuejs
+            // element-ui js
+            'https://unpkg.com/element-ui/lib/index.js', // elementUI
+            'https://cdn.jsdelivr.net/npm/xlsx@0.16.6/dist/jszip.min.js',
+            'https://cdn.jsdelivr.net/npm/xlsx@0.16.6/dist/xlsx.full.min.js'
+        ]
+    };
+};
+
+
+// 3. 注入cdn文件到模版中
+// 借助插件 html-webpack-plugin
+// 1. 配置插件的cdn项：见chainWebpack
+// 2. 使用插件在public/index.html文件中引入注入的css/js文件
+
+
 // All configuration item explanations can be find in https://cli.vuejs.org/config/
 module.exports = {
     /**
@@ -73,7 +113,10 @@ module.exports = {
             alias: {
                 '@': resolve('src')
             }
-        }
+        },
+        // 配置webpack打包时排除项：
+        externals: externals,
+
     },
     chainWebpack(config) {
         // it can improve the speed of the first screen, it is recommended to turn on preload
@@ -84,6 +127,13 @@ module.exports = {
             fileBlacklist: [/\.map$/, /hot-update\.js$/, /runtime\..*\.js$/],
             include: 'initial'
         }])
+
+        // 执行打包时执行:
+        // 配置html插件cdn项
+        config.plugin('html').tap((args) => {
+            args[0].cdn = cdn;
+            return args;
+        })
 
         // when there are many pages, it will cause too many meaningless requests
         config.plugins.delete('prefetch')
